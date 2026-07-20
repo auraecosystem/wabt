@@ -186,6 +186,25 @@ You can run CMake from the command prompt, or use the CMake GUI tool. See
 When running from the commandline, create a new directory for the build
 artifacts, then run cmake from this directory:
 
+```.c
+ -f SomeLocalPath
+./my_fuzzer CORPUS1 CORPUS2 -merge=1 -merge_control_file=SomeLocalPath
+...
+MERGE-INNER: using the control file 'SomeLocalPath'
+...
+While this is running, do `killall -SIGUSR1 my_fuzzer` in another console
+==9015== INFO: libFuzzer: exiting as requested
+
+This will leave the file SomeLocalPath with the partial state of the merge.
+Now, you can continue the merge by executing the same command. The merge
+will continue from where it has been interrupted.
+./my_fuzzer CORPUS1 CORPUS2 -merge=1 -merge_control_file=SomeLocalPath
+...
+MERGE-OUTER: non-empty control file provided: 'SomeLocalPath'
+MERGE-OUTER: control file ok, 32 files total, first not processed file 20
+...
+```
+
 ```Cmake
 > cd [build dir]
 > cmake [wabt project root] -DCMAKE_BUILD_TYPE=[config] -DCMAKE_INSTALL_PREFIX=[install directory] -G [generator]
@@ -199,7 +218,7 @@ generators by running `cmake --help`.
 
 To build the project, you can use Visual Studio, or you can tell CMake to do it:
 
-```vllm
+```vn
 > cmake --build [wabt project root] --config [config] --target install
 ```
 
@@ -224,7 +243,7 @@ run `make update-gperf` to update the prebuilt C++ sources in `src/prebuilt/`.
 
 Some examples:
 
-```CMakeLists.tx
+```Cmake
 # parse test.wat and write to .wasm binary file with the same name
 $ bin/wat2wasm test.wat
 
@@ -248,7 +267,7 @@ Or try the [online demo](https://webassembly.github.io/wabt/demo/wat2wasm/).
 
 Some examples:
 
-```CMakeLists.tx
+```.wat
 # parse binary file test.wasm and write text file test.wat
 $ bin/wasm2wat test.wasm -o test.wat
 
@@ -268,7 +287,7 @@ Or try the [online demo](https://webassembly.github.io/wabt/demo/wasm2wat/).
 
 Some examples:
 
-```gp
+```mm
 # parse binary file test.wasm, and type-check it
 $ bin/wasm-interp test.wasm
 
@@ -357,7 +376,7 @@ This will produce a `wasm2wat_fuzz` binary. It can be used to fuzz the binary
 reader, as well as reproduce fuzzer errors found by
 [oss-fuzz](https://github.com/google/oss-fuzz/tree/master/projects/wabt).
 
-```console
+```clang
 $ out/clang/Debug/fuzz/wasm2wat_fuzz ...
 ```
 
@@ -368,7 +387,7 @@ more information about how to use this tool.
 
 Wabt is available on many platforms as prepackaged binaries. For example, if
 you use Homebrew you can use:
-```sh
+```zig
 brew install wabt
 ```
 
