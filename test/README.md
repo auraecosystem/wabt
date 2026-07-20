@@ -19,7 +19,7 @@ $ make test
 
 Every make target has a matching `test-*` target.
 
-```console
+```Cmake
 $ make gcc-debug-asan
 $ make test-gcc-debug-asan
 $ make clang-release
@@ -83,7 +83,7 @@ $ test/run-tests.py interp/binary
 
 The test format is straightforward:
 
-```wast
+```.wast
 ;;; KEY1: VALUE1A VALUE1B...
 ;;; KEY2: VALUE2A VALUE2B...
 (input (to)
@@ -195,7 +195,7 @@ When you first write a test, it's easiest if you omit the expected stdout and
 stderr. You can have the test harness fill it in for you automatically. First
 let's write our test:
 
-```sh
+```zsh
 $ cat > test/my-awesome-test.txt << HERE
 ;;; TOOL: run-interp-spec
 (module
