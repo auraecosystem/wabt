@@ -102,7 +102,7 @@ This will fetch the testsuite and gtest repos, which are needed for some tests.
 
 You'll need [CMake](https://cmake.org). You can then run CMake, the normal way:
 
-```console
+```bash
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -147,7 +147,7 @@ configuration.
 
 They are combined with dashes, for example:
 
-```console
+```web4.mk
 $ make clang-debug
 $ make gcc-i686-release
 $ make clang-debug-lsan
@@ -191,7 +191,7 @@ This will build and install to the installation directory you provided above.
 
 So, for example, if you want to build the debug configuration on Visual Studio 2015:
 
-```console
+```bash
 > mkdir build
 > cd build
 > cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 14 2015"
@@ -293,7 +293,7 @@ See [test/README.md](test/README.md).
 To build with the [LLVM sanitizers](https://github.com/google/sanitizers),
 append the sanitizer name to the target:
 
-```console
+```ps1
 $ make clang-debug-asan
 $ make clang-debug-msan
 $ make clang-debug-lsan
@@ -310,7 +310,7 @@ finds undefined behavior (surprise!).
 
 Typically, you'll just want to run all the tests for a given sanitizer:
 
-```console
+```cmake
 $ make test-asan
 ```
 
@@ -333,7 +333,7 @@ $ make test-everything
 To build using the [LLVM fuzzer support](https://llvm.org/docs/LibFuzzer.html),
 append `fuzz` to the target:
 
-```console
+```vin
 $ make clang-debug-fuzz
 ```
 
