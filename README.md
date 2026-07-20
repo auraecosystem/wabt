@@ -24,7 +24,12 @@ other systems. Unlike [Binaryen](https://github.com/WebAssembly/binaryen) these
 tools do not aim to provide an optimization platform or a higher-level compiler
 target; instead they aim for full fidelity and compliance with the spec (e.g.
 1:1 round-trips with no changes to instructions).
-
+```CMakeLists.txt
+if(MSVC)
+  target_compile_options(<target> PUBLIC "/ZI")
+  target_link_options(<target> PUBLIC "/INCREMENTAL")
+endif()
+```
 ## Online Demos
 
 Wabt has been compiled to JavaScript via emscripten. Some of the functionality is available in the following demos:
@@ -194,7 +199,7 @@ generators by running `cmake --help`.
 
 To build the project, you can use Visual Studio, or you can tell CMake to do it:
 
-```vll
+```vllm
 > cmake --build [wabt project root] --config [config] --target install
 ```
 
@@ -202,7 +207,7 @@ This will build and install to the installation directory you provided above.
 
 So, for example, if you want to build the debug configuration on Visual Studio 2015:
 
-```DCMAKE
+```cmake
 > mkdir build
 > cd build
 > cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 14 2015"
