@@ -24,7 +24,7 @@ other systems. Unlike [Binaryen](https://github.com/WebAssembly/binaryen) these
 tools do not aim to provide an optimization platform or a higher-level compiler
 target; instead they aim for full fidelity and compliance with the spec (e.g.
 1:1 round-trips with no changes to instructions).
-```CMakeLists.txt
+```cc
 if(MSVC)
   target_compile_options(<target> PUBLIC "/ZI")
   target_link_options(<target> PUBLIC "/INCREMENTAL")
@@ -186,7 +186,7 @@ You can run CMake from the command prompt, or use the CMake GUI tool. See
 When running from the commandline, create a new directory for the build
 artifacts, then run cmake from this directory:
 
-```.c
+```cc
  -f SomeLocalPath
 ./my_fuzzer CORPUS1 CORPUS2 -merge=1 -merge_control_file=SomeLocalPath
 ...
@@ -218,7 +218,7 @@ generators by running `cmake --help`.
 
 To build the project, you can use Visual Studio, or you can tell CMake to do it:
 
-```vn
+```cc
 > cmake --build [wabt project root] --config [config] --target install
 ```
 
