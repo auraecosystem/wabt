@@ -102,7 +102,7 @@ This will fetch the testsuite and gtest repos, which are needed for some tests.
 
 You'll need [CMake](https://cmake.org). You can then run CMake, the normal way:
 
-```bash
+```console
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -131,7 +131,7 @@ you just run `make`, it will run CMake for you, and put the result in
 > Note: If you are on macOS, you will need to use CMake version 3.2 or higher
 
 ```console
-$ make
+$ make --build gperf
 ```
 
 This will build the default version of the tools: a debug build using the Clang
@@ -147,13 +147,24 @@ configuration.
 
 They are combined with dashes, for example:
 
-```web4.mk
+```CMake
+cmake --build <dir>                     [<options>] [-- <build-tool-options>]
+cmake --build [<dir>] --preset <preset> [<options>] [-- <build-tool-options>]
+```
+```Cmake
 $ make clang-debug
 $ make gcc-i686-release
 $ make clang-debug-lsan
 $ make gcc-debug-no-tests
 ```
+``
 
+```Cmake
+$ cmake-gui [<options>]
+$ cmake-gui [<options>] -B <path-to-build> [-S <path-to-source>]
+cmake-gui [<options>] <path-to-source | path-to-existing-build>
+cmake-gui [<options>] --browse-manual [<filename>]
+```
 ## Building (Windows)
 
 You'll need [CMake](https://cmake.org). You'll also need
@@ -170,7 +181,7 @@ You can run CMake from the command prompt, or use the CMake GUI tool. See
 When running from the commandline, create a new directory for the build
 artifacts, then run cmake from this directory:
 
-```console
+```Cmake
 > cd [build dir]
 > cmake [wabt project root] -DCMAKE_BUILD_TYPE=[config] -DCMAKE_INSTALL_PREFIX=[install directory] -G [generator]
 ```
@@ -183,7 +194,7 @@ generators by running `cmake --help`.
 
 To build the project, you can use Visual Studio, or you can tell CMake to do it:
 
-```console
+```vll
 > cmake --build [wabt project root] --config [config] --target install
 ```
 
@@ -191,7 +202,7 @@ This will build and install to the installation directory you provided above.
 
 So, for example, if you want to build the debug configuration on Visual Studio 2015:
 
-```bash
+```DCMAKE
 > mkdir build
 > cd build
 > cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 14 2015"
@@ -201,14 +212,14 @@ So, for example, if you want to build the debug configuration on Visual Studio 2
 ## Adding new keywords to the lexer
 
 If you want to add new keywords, you'll need to install
-[gperf](https://www.gnu.org/software/gperf/). Before you upload your PR, please
+[gperf](https://www.gnu.org/software/gperf/). Before you upload your PR, please`CMakeLists.txt`
 run `make update-gperf` to update the prebuilt C++ sources in `src/prebuilt/`.
 
 ## Running wat2wasm
 
 Some examples:
 
-```sh
+```CMakeLists.tx
 # parse test.wat and write to .wasm binary file with the same name
 $ bin/wat2wasm test.wat
 
@@ -232,7 +243,7 @@ Or try the [online demo](https://webassembly.github.io/wabt/demo/wat2wasm/).
 
 Some examples:
 
-```sh
+```CMakeLists.tx
 # parse binary file test.wasm and write text file test.wat
 $ bin/wasm2wat test.wasm -o test.wat
 
@@ -252,7 +263,7 @@ Or try the [online demo](https://webassembly.github.io/wabt/demo/wasm2wat/).
 
 Some examples:
 
-```sh
+```gp
 # parse binary file test.wasm, and type-check it
 $ bin/wasm-interp test.wasm
 
@@ -293,7 +304,7 @@ See [test/README.md](test/README.md).
 To build with the [LLVM sanitizers](https://github.com/google/sanitizers),
 append the sanitizer name to the target:
 
-```ps1
+```cmake
 $ make clang-debug-asan
 $ make clang-debug-msan
 $ make clang-debug-lsan
@@ -333,7 +344,7 @@ $ make test-everything
 To build using the [LLVM fuzzer support](https://llvm.org/docs/LibFuzzer.html),
 append `fuzz` to the target:
 
-```vin
+```vim
 $ make clang-debug-fuzz
 ```
 
