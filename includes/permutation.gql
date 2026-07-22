@@ -1,0 +1,96 @@
+/* =========================================================
+   UNIVERSAL GRAPH MAPPING & COLLABORATION FRAMEWORK
+   Author: Asha
+   Purpose: Map entities, relationships, and visualize collaboration
+   ========================================================= */
+
+/* ---------- 1️⃣ GRAPH SCHEMA ---------- */
+CREATE GRAPH UniversalGraph (
+  VERTEX Entity (
+    PRIMARY_ID id STRING,
+    name STRING,
+    type STRING
+  ),
+  EDGE Relation (
+    FROM Entity,
+    TO Entity,
+    relationType STRING,
+    weight FLOAT
+  )
+);
+
+/* ---------- 2️⃣ UNIVERSAL MAPPING QUERY ---------- */
+CREATE QUERY mapUniversalGraph(VERTEX<Entity> start) FOR GRAPH UniversalGraph {
+  SetAccum<VERTEX<Entity>> @@connected;
+  MapAccum<STRING, LIST<VERTEX<Entity>>> @@map;
+  SumAccum<float> @@totalWeight;
+
+  SELECT t
+  FROM start-(Relation)->t
+  ACCUM @@connected += t,
+         @@map += (start.name -> [t]),
+         @@totalWeight += e.weight;
+
+  PRINT @@connected;
+  PRINT @@map;
+  PRINT @@totalWeight;
+}
+
+/* ---------- 3️⃣ ENGAGEMENT DASHBOARD QUERY ---------- */
+CREATE QUERY engagementDashboard(VERTEX<Entity> u) FOR GRAPH UniversalGraph {
+  SumAccum<int> @@projectCount;
+  SumAccum<int> @@fileCount;
+  SumAccum<float> @@engagementScore;
+
+  SELECT p
+  FROM u-(Relation WHERE relationType == "EngagedWith")->p
+  ACCUM @@projectCount += 1, @@engagementScore += e.weight;
+
+  SELECT f
+  FROM u-(Relation WHERE relationType == "EngagedWith")->p-(Relation WHERE relationType == "AttachedTo")->f
+  ACCUM @@fileCount += 1;
+
+  PRINT @@projectCount;
+  PRINT @@fileCount;
+  PRINT @@engagementScore;
+}
+
+/* ---------- 4️⃣ COLLABORATION NETWORK QUERY ---------- */
+CREATE QUERY collaborationNetwork(VERTEX<Entity> u) FOR GRAPH UniversalGraph {
+  SetAccum<VERTEX<Entity>> @@collaborators;
+  MapAccum<STRING, LIST<VERTEX<Entity>>> @@collabMap;
+
+  SELECT otherUser
+  FROM u-(Relation WHERE relationType == "EngagedWith")->p
+       <- (Relation WHERE relationType == "EngagedWith")-otherUser
+  WHERE otherUser != u
+  ACCUM @@collaborators += otherUser,
+         @@collabMap += (p.name -> [otherUser]);
+
+  PRINT @@collaborators;
+  PRINT @@collabMap;
+}
+
+/* ---------- 5️⃣ COLLABORATION DASHBOARD QUERY ---------- */
+CREATE QUERY collabDashboard(VERTEX<Entity> u) FOR GRAPH UniversalGraph {
+  SumAccum<int> @@collabCount;
+  MapAccum<STRING, int> @@projectCollabs;
+
+  SELECT otherUser, p
+  FROM u-(Relation WHERE relationType == "EngagedWith")->p
+       <- (Relation WHERE relationType == "EngagedWith")-otherUser
+  WHERE otherUser != u
+  ACCUM @@collabCount += 1,
+         @@projectCollabs += (p.name -> 1);
+
+  PRINT @@collabCount;
+  PRINT @@projectCollabs;
+}
+
+/* ---------- 6️⃣ VISUALIZATION OUTPUT ---------- */
+/*
+Use TigerGraph GraphStudio or export results to visualization tools:
+- Gephi / Neo4j Bloom for network graphs
+- D3.js / Plotly / Power BI for interactive dashboards
+*/
+
